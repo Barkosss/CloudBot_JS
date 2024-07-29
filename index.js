@@ -26,7 +26,7 @@ client.login(config.token).then(r => console.log(r));
 client.once("ready", async() => {
     try {
         if (!commands.length) console.log("Commands not found");
-        for(file of commands) {
+        for(let file of commands) {
             const commandName = file.split(".")[0];
             const command = require(`./commands/${commandName}`);
             client.commands.set(commandName, command);
