@@ -16,19 +16,24 @@ const client = new Client(
 
 const config = require("./config.json");
 const fs = require("fs");
+const timestamp = require("discord-timestamp");
+
+const { Database, LocalStorage } = require("moonlifedb");
+const adapter = new LocalStorage({ path: 'database' }) // Note #1
+const db = new Database(adapter)
+
 
 client.commands = new Collection();
-const commands = fs.readdirSync(__dirname + "/commands/").filter(file => file.endsWith(".js"));
+const utilityCommands = fs.readdirSync(__dirname + "/commands/utility/").filter(file => file.endsWith(".js"));
 let isConnected = false;
-client.login(config.token).then(r => console.log(r));
+client.login(config.token);
 
 
 client.once("ready", async() => {
     try {
-        if (!commands.length) console.log("Commands not found");
-        for(let file of commands) {
+        for(let file of utilityCommands) {
             const commandName = file.split(".")[0];
-            const command = require(`./commands/${commandName}`);
+            const command = require(`./commands/utility/${commandName}`);
             client.commands.set(commandName, command);
         }
         isConnected = true;
