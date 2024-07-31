@@ -42,7 +42,7 @@ module.exports.run = async(client, interaction) => {
                     .addComponents(
                         new MessageButton()
                             .setStyle("SUCCESS")
-                            .setCustomId("auth_register")
+                            .setCustomId("auth_registration")
                             .setLabel("| Подать заявку")
                             .setEmoji(emoji.registration)
                     )
@@ -78,7 +78,7 @@ module.exports.run = async(client, interaction) => {
                             .setStyle("SECONDARY")
                             .setCustomId("statusserver_getTiming")
                             .setLabel("| Расписание")
-                            .setEmoji(emoji.timing)
+                            .setEmoji(emoji.timetable)
                     )
                     .addComponents(
                         new MessageButton()

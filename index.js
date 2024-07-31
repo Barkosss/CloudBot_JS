@@ -50,20 +50,8 @@ client.on("interactionCreate", async(interaction) => {
         if (!isConnected) return;
         let command = client.commands.get(interaction.commandName);
 
-        if (interaction.isButton()) {
-            command = client.commands.get(interaction.customId.split('_')[0])
-            return command.run(client, interaction, 'buttonUsed', interaction.customId)
-        }
-        else if (interaction.isSelectMenu()) {
-            command = client.commands.get(interaction.customId.split('_')[0])
-            return command.run(client, interaction, 'selectMenuUsed', interaction.customId)
-        }
-        else if (interaction.isModalSubmit()) {
-            command = client.commands.get(interaction.customId.split('_')[0])
-            return command.run(client, interaction, 'modalUsed', interaction.customId)
-        }
         try {
-            if (interaction.guild) command.run(client, interaction);
+            if (interaction.guild) return command.run(client, interaction, 'modalUsed', interaction.customId);
             else return;
 
         } catch (error) {
