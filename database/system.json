@@ -1,7 +1,16 @@
 {
     "emoji": {
-        "verify": "",
-        "registration": "",
-        "status": ""
+        "verify": "<:newUser:1268143636822884363>",
+        "registration": "<:newUser:1268143636822884363>",
+        "status": "<:announcement:1268143251991429134>",
+        "open": "<:greenDot:1268147419959263242>",
+        "timing": "<:timing:1268147432823328888>",
+        "bell": "<:bell:1268147426074689546>",
+        "access": "<:world:1268148980684951583>"
+    },
+    "text": {
+        "serverStatus": {
+            "serverName": "Russian Role-Play Server | Distant Dokara"
+        }
     }
 }

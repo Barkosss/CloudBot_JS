@@ -23,7 +23,7 @@ module.exports.run = async(client, interaction) => {
                             .setStyle("SUCCESS")
                             .setCustomId("auth_verify")
                             .setLabel("| Верифицироваться")
-                            //.setEmoji(emoji.verify)
+                            .setEmoji(emoji.verify)
                     )
 
                 await interaction.channel.send({ embeds:[embed], components:[button] });
@@ -57,7 +57,7 @@ module.exports.run = async(client, interaction) => {
                 embed.setTitle(emoji.status + " | Активность сервера");
                 embed.setDescription("");
                 embed.addFields([
-                    { name: "Название сервера:", value: "```" + "```" },
+                    { name: "Название сервера:", value: "```" + db.read("system", { key: "text.serverStatus.serverName" }) + "```" },
                     { name: "Запустил:", value: "`Никто`" },
                     { name: "Пароль:", value: "`Отсутствует`" },
                     { name: "Дополнительная информация:", value: "```" + "Отсутствует" + "```" },
@@ -65,7 +65,38 @@ module.exports.run = async(client, interaction) => {
                 ])
                 embed.setColor("#b7cece");
 
-                await interaction.channel.send({ embeds:[embed] });
+                const button = new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setStyle("SUCCESS")
+                            .setCustomId("statusserver_openServer")
+                            .setLabel("| Открыть Сервер")
+                            .setEmoji(emoji.open)
+                    )
+                    .addComponents(
+                        new MessageButton()
+                            .setStyle("SECONDARY")
+                            .setCustomId("statusserver_getTiming")
+                            .setLabel("| Расписание")
+                            .setEmoji(emoji.timing)
+                    )
+                    .addComponents(
+                        new MessageButton()
+                            .setStyle("PRIMARY")
+                            .setCustomId("statusserver_setAccess")
+                            .setLabel("| Доступ")
+                            .setEmoji(emoji.access)
+                    )
+                const buttonAnnounce = new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setStyle("PRIMARY")
+                            .setCustomId("statusserver_setAnnouncement")
+                            .setLabel("| Получать уведомления")
+                            .setEmoji(emoji.bell)
+                    )
+
+                await interaction.channel.send({ embeds:[embed], components:[button, buttonAnnounce] });
                 await interaction.reply({ content: `Success!`, ephemeral: true });
                 break;
             }
