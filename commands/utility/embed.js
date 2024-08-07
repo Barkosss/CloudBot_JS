@@ -1,13 +1,15 @@
 const { MessageEmbed, MessageButton, MessageSelectMenu, MessageActionRow, Modal, TextInputComponent } = require('discord.js');
 const timestamp = require("discord-timestamp");
 
-const { Database, LocalStorage } = require("moonlifedb");
+const { Database, LocalStorage, JSONFormatter } = require("moonlifedb");
 const adapter = new LocalStorage({ path: 'database' }) // Note #1
-const db = new Database(adapter)
+const db = new Database(adapter, { useTabulation: new JSONFormatter({ whitespace: "\t" }) })
 
 module.exports.run = async(client, interaction) => {
     try {
         const emoji = db.read("system", { key: "emoji" });
+        const color = db.read("system", { key: "color" });
+
         const section = interaction.options.getString("section");
         switch(section) {
 
@@ -15,13 +17,13 @@ module.exports.run = async(client, interaction) => {
                 const embed = new MessageEmbed();
                 embed.setTitle(emoji.verify + " | Верификация пользователя");
                 embed.setDescription("Чтобы подать заявку на вступление, необходимо для начала пройти верификацию");
-                embed.setColor("#cee0dc");
+                embed.setColor(color.green);
 
                 const button = new MessageActionRow()
                     .addComponents(
                         new MessageButton()
                             .setStyle("SUCCESS")
-                            .setCustomId("auth_verify")
+                            .setCustomId("auth_verify_start")
                             .setLabel("| Верифицироваться")
                             .setEmoji(emoji.verify)
                     )
@@ -36,13 +38,13 @@ module.exports.run = async(client, interaction) => {
                 embed.setTitle(emoji.registration + " | Регистрация");
                 embed.setDescription("Чтобы получить полноценный доступ, необходимо пройти регистрацию. Она состоит их пяти простых вопросов.");
                 embed.addFields("График рассмотрения заявок:", "С <t:1722409200:t> до <t:1722438000:t>", false);
-                embed.setColor("#cee0dc");
+                embed.setColor(color.green);
 
                 const button = new MessageActionRow()
                     .addComponents(
                         new MessageButton()
                             .setStyle("SUCCESS")
-                            .setCustomId("auth_registration")
+                            .setCustomId("auth_registration_createOrder")
                             .setLabel("| Подать заявку")
                             .setEmoji(emoji.registration)
                     )
@@ -63,7 +65,7 @@ module.exports.run = async(client, interaction) => {
                     { name: "Дополнительная информация:", value: "```" + "Отсутствует" + "```" },
                     { name: "Последнее действие:", value: "<t:" + timestamp(Date.now()) + ":R>"  }
                 ])
-                embed.setColor("#b7cece");
+                embed.setColor(color.green);
 
                 const button = new MessageActionRow()
                     .addComponents(
@@ -80,13 +82,7 @@ module.exports.run = async(client, interaction) => {
                             .setLabel("| Расписание")
                             .setEmoji(emoji.timetable)
                     )
-                    .addComponents(
-                        new MessageButton()
-                            .setStyle("PRIMARY")
-                            .setCustomId("statusserver_setAccess")
-                            .setLabel("| Доступ")
-                            .setEmoji(emoji.access)
-                    )
+
                 const buttonAnnounce = new MessageActionRow()
                     .addComponents(
                         new MessageButton()

@@ -20,6 +20,38 @@ const commands = [
                 )
                 .setRequired(true)
         ),
+
+    new SlashCommandBuilder()
+        .setName("reminder")
+        .setDMPermission(false)
+        .setDescription("Управление напоминаниями")
+        .addSubcommand(subCommand =>
+            subCommand
+                .setName("create")
+                .setDescription("Создать напоминание")
+                .addStringOption(option => option.setName("duration").setDescription("Укажите длительность").setMinLength(2).setRequired(true))
+                .addStringOption(option => option.setName("content").setDescription("Укажите содержание").setRequired(true))
+        )
+        .addSubcommand(subCommand =>
+            subCommand
+                .setName("edit")
+                .setDescription("Редактировать напоминание")
+                .addNumberOption(option => option.setName("index").setDescription("Укажите индекс напоминания").setRequired(true))
+                .addStringOption(option => option.setName("duration").setDescription("Укажите новую длительность").setMinLength(2))
+                .addStringOption(option => option.setName("content").setDescription("Укажите новое содержание"))
+        )
+        .addSubcommand(subCommand =>
+            subCommand
+                .setName("remove")
+                .setDescription("Удалить напоминание")
+                .addNumberOption(option => option.setName("index").setDescription("Укажите индекс напоминания").setRequired(true))
+        )
+        .addSubcommand(subCommand =>
+            subCommand
+                .setName("list")
+                .setDescription("Посмотреть активные напоминания")
+        )
+
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: "10" }).setToken(config.token);
